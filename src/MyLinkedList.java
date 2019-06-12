@@ -4,92 +4,120 @@ import java.util.LinkedList;
 
 public class MyLinkedList<E> implements List<E> {
 
-    public static void main(String[] args) {
-        MyLinkedList food = new MyLinkedList();
-        food.addLast("pizza");
-        food.addLast("tiramisu");
-        food.addLast("pasta");
-        food.addLast("frittura mista");
-        food.addLast("ice cream");
-        food.addFist("chicheti");
-        System.out.println(food.size);
-        System.out.println(food.getIndex(0));
-    }
-
     private Node<E> firstNode;
     private Node<E> lastNode;
     private int size = 0;
 
-    public MyLinkedList() {
-        lastNode = new Node<E>(null, firstNode, null);
-        firstNode = new Node<E>(null, null, lastNode);
-    }
 
     @Override
-    public void addLast(E value) {
-        Node<E> prev = lastNode;
-        prev.setItem(value);
-        lastNode = new Node<E>(null, prev, null);
-        prev.setNext(firstNode);
-        size++;
-    }
-    @Override
-    public void addFist(E value) {
-        Node<E> next = firstNode;
-        next.setItem(value);
-        firstNode = new Node<E>(null, null, next);
-        next.setNext(firstNode);
-        size++;
-    }
-
-    @Override
-    public E getIndex(int index) {
-        Node<E> target = firstNode.getNext();
-        for (int i = 0; i < index; i++) {
-            target = get(target);
+    public void add(E value) {
+        Node<E> node = new Node(value, null, null);
+        if (isEmpty()) {
+            firstNode = node;
+            lastNode = node;
+        } else {
+            node.prev = lastNode;
+            lastNode.next = node;
+            lastNode = node;
         }
-        return target.getItem();
+        size++;
+    }
+
+    @Override
+    public void add(E value, int index) {
+        Node<E> node = new Node(value, null, null);
+        if (isEmpty()) {
+            firstNode = node;
+            lastNode = node;
+        }
+        else{
+
+            node.prev=findIndex(index-1);
+            findIndex(index-1).next=node;
+            node.next=findIndex(index);
+            findIndex(index).prev = node;
+
+        }
+        size++;
+    }
+
+    @Override
+    public void addAll(List<E> list) {
+        for (int i = 0; i < list.size(); i++) {
+            add(list.get(i));
+        }
     }
 
 
-    private Node<E> get(Node<E> current) {
-        return current.getNext();
+    public Node<E> findIndex(int index) {
+        checkSize(index);
+        Node<E> node = firstNode;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
+        }
+        return node;
+    }
+
+    public E get(int index) {
+        return findIndex(index).item;
+
+    }
+
+    @Override
+    public void set(E value, int index) {
+        findIndex(index).item = value;
+    }
+
+    @Override
+    public E remove(int index) {
+        findIndex(index).item = null;
+        if (index == size()) {
+            lastNode = findIndex(index - 1);
+        } else if (index == 0) {
+            firstNode = findIndex(index + 1);
+        } else {
+            findIndex(index - 1).next = findIndex(index + 1);
+        }
+        size--;
+        return null;
+    }
+
+    @Override
+    public E remove(E t) {
+        for (int i = 0; i < size; i++) {
+            if (get(i).equals(t)) {
+                remove(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    public void checkSize(int index) {
+        if ((index > size) || (index < 0)) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     private class Node<E> {
-        private E item;
-        private Node<E> next;
-        private Node<E> prev;
+        protected E item;
+        protected Node<E> next;
+        protected Node<E> prev;
 
-        private Node(E element, Node<E> prev, Node<E> next) {
-            this.item = element;
-            this.next = next;
-            this.prev = prev;
-        }
-
-        public E getItem() {
-            return item;
-        }
-
-        public void setItem(E item) {
+        private Node(E item, Node<E> prev, Node<E> next) {
             this.item = item;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<E> next) {
             this.next = next;
-        }
-
-        public Node<E> getPrev() {
-            return prev;
-        }
-
-        public void setPrev(Node<E> prev) {
             this.prev = prev;
         }
+
     }
 
 }

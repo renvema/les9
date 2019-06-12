@@ -1,20 +1,21 @@
 import org.w3c.dom.Node;
 
 public interface List<E> {
-    void addLast(E value);
-    void addFist(E value);
-    E getIndex(int index);
+    void add(E value);
+
+    void add(E value, int index);
+
+    void addAll(List<E> list);
+
+    E get(int index);
+
+    void set(E value, int index);
+
+    E remove(int index);
+
+    E remove(E t);
+
+    int size();
+
+    boolean isEmpty();
 }
-
-//
-//        food1.next=food2;
-//        food2.prev=food1;
-//        food2.next=food3;
-//        food3.prev=food2;
-
-//        Node currentNode = food1;
-//        while (currentNode != null) {
-//            System.out.println(currentNode.item);
-//            currentNode = currentNode.next;
-
-
