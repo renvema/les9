@@ -14,7 +14,7 @@ public class App {
         drink.add("prosecco");
         drink.add("aperol");
         food.addAll(drink);
-        food.add("QWE", 2);
+        food.add("camariere", 2);
         food.remove("pasta");
         System.out.println("Size is " + food.size());
         for (int i = 0; i < food.size(); i++) {

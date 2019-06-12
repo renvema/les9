@@ -26,16 +26,20 @@ public class MyLinkedList<E> implements List<E> {
     @Override
     public void add(E value, int index) {
         Node<E> node = new Node(value, null, null);
-        if (isEmpty()) {
-            firstNode = node;
-            lastNode = node;
-        }
-        else{
+        if (isEmpty() || index == size) {
+            add(value);
+        } else {
+            Node<E> temp = findIndex(index);
+            node.prev = temp.next;
+            temp.prev.next = node;
+            node.next = temp;
+            temp.next.prev = node;
 
-            node.prev=findIndex(index-1);
-            findIndex(index-1).next=node;
-            node.next=findIndex(index);
-            findIndex(index).prev = node;
+//            node.prev=findIndex(index+1);
+//            findIndex(index-1).next=node;
+//
+//            node.next=findIndex(index);
+//            findIndex(index+1).prev=node;
 
         }
         size++;
@@ -49,7 +53,7 @@ public class MyLinkedList<E> implements List<E> {
     }
 
 
-    public Node<E> findIndex(int index) {
+    private Node<E> findIndex(int index) {
         checkSize(index);
         Node<E> node = firstNode;
         for (int i = 0; i < index; i++) {
@@ -117,7 +121,5 @@ public class MyLinkedList<E> implements List<E> {
             this.next = next;
             this.prev = prev;
         }
-
     }
-
 }
