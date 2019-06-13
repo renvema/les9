@@ -71,10 +71,13 @@ public class MyLinkedList<E> implements List<E> {
 
         if (index == size()) {
             lastNode = temp.prev;
+            temp.prev.next = null;
         } else if (index == 0) {
             firstNode = temp.next;
+            temp.next.prev = null;
         } else {
             temp.prev.next = temp.next;
+            temp.next.prev = temp.prev;
         }
         temp = null;
         size--;
@@ -117,5 +120,4 @@ public class MyLinkedList<E> implements List<E> {
             this.prev = prev;
         }
     }
-
 }
