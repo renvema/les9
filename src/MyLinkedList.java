@@ -30,17 +30,10 @@ public class MyLinkedList<E> implements List<E> {
             add(value);
         } else {
             Node<E> temp = findIndex(index);
-            node.prev = temp.next;
-            temp.prev.next = node;
+            node.prev = temp.prev;
             node.next = temp;
-            temp.next.prev = node;
-
-//            node.prev=findIndex(index+1);
-//            findIndex(index-1).next=node;
-//
-//            node.next=findIndex(index);
-//            findIndex(index+1).prev=node;
-
+            temp.prev.next = node;
+            temp.prev = node;
         }
         size++;
     }
@@ -74,14 +67,16 @@ public class MyLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        findIndex(index).item = null;
+        Node<E> temp = findIndex(index);
+
         if (index == size()) {
-            lastNode = findIndex(index - 1);
+            lastNode = temp.prev;
         } else if (index == 0) {
-            firstNode = findIndex(index + 1);
+            firstNode = temp.next;
         } else {
-            findIndex(index - 1).next = findIndex(index + 1);
+            temp.prev.next = temp.next;
         }
+        temp = null;
         size--;
         return null;
     }
@@ -122,4 +117,5 @@ public class MyLinkedList<E> implements List<E> {
             this.prev = prev;
         }
     }
+
 }
